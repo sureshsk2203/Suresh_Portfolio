@@ -1,0 +1,753 @@
+/* ============================================================
+   JOURNEY — VHS shelf timeline
+   ============================================================ */
+
+.journey-section {
+  --j-bg: #0f1015;
+  --j-cream: #f5f0e9;
+  --j-orange: #ff762e;
+  --j-amber: #f4b35e;
+  --j-ink: #11131a;
+  --j-rule: rgba(245, 240, 233, 0.55);
+  --j-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: relative;
+  overflow: hidden;
+  padding: 110px 6vw 40px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 118, 46, 0.14), transparent 45%),
+    radial-gradient(rgba(245, 240, 233, 0.05) 1px, transparent 1px) 0 0 / 5px 5px,
+    var(--j-bg);
+  color: var(--j-cream);
+}
+
+/* ---------- background glows ---------- */
+.journey-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+.journey-glow-one {
+  width: 380px;
+  height: 380px;
+  top: -120px;
+  left: -100px;
+  background: rgba(255, 118, 46, 0.12);
+}
+.journey-glow-two {
+  width: 420px;
+  height: 420px;
+  bottom: -160px;
+  right: -120px;
+  background: rgba(244, 179, 94, 0.08);
+}
+
+/* ---------- heading ---------- */
+.journey-heading {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+}
+
+.journey-eyebrow {
+  display: block;
+  margin-bottom: 22px;
+  font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  font-size: 15px;
+  letter-spacing: 0.32em;
+  color: var(--j-orange);
+}
+
+.journey-heading h2 {
+  margin: 0;
+  font-family: 'Anton', 'Bebas Neue', 'Oswald', Impact, sans-serif;
+  font-weight: 400;
+  font-size: clamp(56px, 9vw, 128px);
+  line-height: 0.98;
+  letter-spacing: 0.01em;
+  color: var(--j-cream);
+}
+
+.journey-heading p {
+  margin: 22px 0 0;
+  max-width: 460px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(245, 240, 233, 0.62);
+}
+
+/* ---------- year tabs ---------- */
+.journey-tabs {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  margin: 56px auto 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.journey-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background: var(--j-orange);
+  transition:
+    width 0.6s var(--j-ease),
+    transform 0.6s var(--j-ease);
+  pointer-events: none;
+}
+
+.tab {
+  position: relative;
+  height: 25px;
+  margin-left: -1px;
+  padding: 0 14px;
+  border: 1px solid var(--j-rule);
+  background: transparent;
+  color: var(--j-cream);
+  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.45s var(--j-ease);
+}
+.tab:first-of-type {
+  margin-left: 0;
+}
+.tab.active {
+  color: var(--j-ink);
+}
+
+/* ---------- 3D shelf ---------- */
+.journey-shelf {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin-top: 26px;
+  perspective: 2200px;
+  perspective-origin: 50% 50%;
+  touch-action: pan-y;
+  outline: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.journey-shelf:active {
+  cursor: grabbing;
+}
+
+.journey-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  font-size: calc(var(--H, 400px) / 100); /* 1em = 1% of tape height */
+  transform-style: preserve-3d;
+}
+
+.tape {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+  visibility: hidden;
+  --o: 0;
+}
+
+.face {
+  position: absolute;
+  top: calc(var(--H) / -2);
+  height: var(--H);
+  border-radius: 2px;
+  backface-visibility: hidden;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* light falling across the turning box */
+.face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+}
+.sp::after {
+  opacity: calc(var(--o) * 0.55);
+}
+.cv::after {
+  opacity: calc((1 - var(--o)) * 0.5);
+}
+
+/* ---------- spine (front face) ---------- */
+.sp {
+  width: var(--ws);
+  left: calc(var(--ws) / -2);
+  transform: translateZ(calc(var(--d) / 2));
+  align-items: center;
+  justify-content: space-between;
+  padding: 5em 0 4.5em;
+  background: linear-gradient(90deg, #1a1c25, #232632 45%, #181a22);
+  border: 1px solid rgba(245, 240, 233, 0.14);
+  color: var(--j-cream);
+}
+
+.sp-dot {
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
+  background: var(--j-orange);
+  box-shadow: 0 0 0 1em rgba(255, 118, 46, 0.22);
+}
+
+.sp-title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Anton', 'Bebas Neue', Impact, sans-serif;
+  font-size: 3.6em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sp-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6em;
+}
+.sp-brand {
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: 2.2em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+.sp-badge {
+  display: inline-block;
+  padding: 0.5em 0.9em;
+  border: 1px solid currentColor;
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: 2.2em;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.08em;
+}
+
+/* spine tones */
+.tape[data-tone='1'] .sp {
+  background: linear-gradient(90deg, #ff762e, #ff8a4a 50%, #f0641c);
+  color: var(--j-ink);
+  border-color: rgba(17, 19, 26, 0.35);
+}
+.tape[data-tone='1'] .sp-dot {
+  background: var(--j-ink);
+  box-shadow: 0 0 0 1em rgba(17, 19, 26, 0.18);
+}
+.tape[data-tone='2'] .sp {
+  background: linear-gradient(90deg, #e9dec9, #f5f0e9 50%, #e2d6bf);
+  color: var(--j-ink);
+  border-color: rgba(17, 19, 26, 0.25);
+}
+
+/* ---------- cover (side face, turned to the viewer) ---------- */
+.cv {
+  width: var(--d);
+  left: calc(var(--d) / -2);
+  transform: rotateY(90deg) translateZ(calc(var(--ws) / 2));
+  padding: 5em 5.5em 4.5em;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(255, 118, 46, 0.35), transparent 45%),
+    linear-gradient(160deg, #20232e, #14161d);
+  border: 1px solid rgba(245, 240, 233, 0.2);
+  box-shadow: 0 30px 60px -28px rgba(0, 0, 0, 0.8);
+  color: var(--j-cream);
+}
+
+.cv-label {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  font-size: 2.1em;
+  letter-spacing: 0.28em;
+  color: var(--j-orange);
+}
+
+.cv-year {
+  margin-top: 2.5em;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 9em;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--j-amber);
+}
+
+.cv h3 {
+  margin: 2.4em 0 0;
+  font-family: 'Anton', 'Bebas Neue', Impact, sans-serif;
+  font-weight: 400;
+  font-size: 6.4em;
+  line-height: 1;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+}
+
+.cv p {
+  margin: 1.8em 0 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 2.5em;
+  line-height: 1.55;
+  color: rgba(245, 240, 233, 0.72);
+}
+
+.cv-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: 2.1em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(245, 240, 233, 0.6);
+}
+.cv-foot .sp-badge {
+  font-size: 1em;
+  color: var(--j-cream);
+}
+
+/* ---------- arrows ---------- */
+.journey-arrow {
+  position: absolute;
+  top: calc(50% + 20px);
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--j-rule);
+  border-radius: 50%;
+  background: rgba(15, 16, 21, 0.6);
+  color: var(--j-cream);
+  cursor: pointer;
+  transition:
+    background 0.4s var(--j-ease),
+    color 0.4s var(--j-ease),
+    border-color 0.4s var(--j-ease);
+}
+.journey-arrow:hover {
+  background: var(--j-orange);
+  border-color: var(--j-orange);
+  color: var(--j-ink);
+}
+.journey-arrow.prev {
+  left: 0;
+}
+.journey-arrow.next {
+  right: 0;
+}
+
+/* ---------- caption ---------- */
+.journey-caption {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  margin-top: 10px;
+  text-align: center;
+  pointer-events: none;
+}
+.cap-mask {
+  width: min(92vw, 760px);
+  overflow: hidden;
+}
+.cap-title {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 31px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.cap-sub {
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.09em;
+  color: var(--j-orange);
+}
+.cap-year {
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  color: rgba(245, 240, 233, 0.6);
+}
+
+/* ---------- footer ---------- */
+.journey-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 46px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(245, 240, 233, 0.12);
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  color: rgba(245, 240, 233, 0.5);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 767px) {
+  .journey-section {
+    padding: 80px 20px 32px;
+  }
+  .journey-eyebrow {
+    font-size: 12px;
+  }
+  .journey-tabs {
+    margin-top: 40px;
+  }
+  .tab {
+    padding: 0 10px;
+    font-size: 9.5px;
+  }
+  .cap-title {
+    font-size: 24px;
+  }
+  .journey-arrow {
+    width: 38px;
+    height: 38px;
+  }
+  .journey-footer {
+    font-size: 9px;
+  }
+}
+
+/* ---------- tabs bar + auto scroll toggle ---------- */
+.journey-bar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px 18px;
+  margin-top: 56px;
+}
+.journey-bar .journey-tabs {
+  margin: 0;
+}
+
+.journey-auto {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 25px;
+  padding: 0 12px;
+  border: 1px solid var(--j-rule);
+  background: transparent;
+  color: rgba(245, 240, 233, 0.7);
+  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.4s var(--j-ease), border-color 0.4s var(--j-ease);
+}
+.journey-auto:hover,
+.journey-auto.on {
+  color: var(--j-cream);
+}
+.auto-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(245, 240, 233, 0.35);
+  transition: background 0.4s var(--j-ease), transform 0.4s var(--j-ease);
+}
+.journey-auto.on .auto-dot {
+  background: var(--j-orange);
+  transform: scale(1.3);
+}
+
+/* ---------- "view full detail" button ---------- */
+.journey-viewrow {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+.journey-view {
+  height: 32px;
+  padding: 0 18px;
+  border: 1px solid var(--j-orange);
+  background: transparent;
+  color: var(--j-orange);
+  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  cursor: pointer;
+  transition: background 0.4s var(--j-ease), color 0.4s var(--j-ease);
+}
+.journey-view:hover {
+  background: var(--j-orange);
+  color: var(--j-ink);
+}
+
+/* ============================================================
+   FULL DETAIL (sheet that grows out of the cover)
+   ============================================================ */
+.journey-detail {
+  --j-cream: #f5f0e9;
+  --j-orange: #ff762e;
+  --j-amber: #f4b35e;
+  --j-ink: #11131a;
+  --j-rule: rgba(245, 240, 233, 0.55);
+  --j-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  visibility: hidden;
+  overflow-y: auto;
+  color: var(--j-cream);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(255, 118, 46, 0.2), transparent 50%),
+    radial-gradient(rgba(245, 240, 233, 0.05) 1px, transparent 1px) 0 0 / 5px 5px,
+    #14161d;
+}
+
+.jd-close {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+  z-index: 2;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.jd-box {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid var(--j-rule);
+  background: transparent;
+  color: var(--j-cream);
+  font-family: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  transition: background 0.4s var(--j-ease), color 0.4s var(--j-ease);
+}
+.jd-close:hover .jd-box,
+.jd-btn:hover {
+  background: var(--j-cream);
+  color: var(--j-ink);
+}
+
+.jd-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4vw;
+  align-items: center;
+  min-height: 100%;
+  padding: 110px 6vw 56px 7vw;
+  box-sizing: border-box;
+}
+
+.rise-mask {
+  overflow: hidden;
+}
+
+.jd-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 560px;
+}
+.jd-label {
+  display: inline-block;
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--j-orange);
+}
+.jd-year {
+  font-family: 'Anton', 'Bebas Neue', Impact, sans-serif;
+  font-size: clamp(80px, 11vw, 170px);
+  line-height: 0.95;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--j-amber);
+}
+.jd-title {
+  margin: 0;
+  font-family: 'Anton', 'Bebas Neue', Impact, sans-serif;
+  font-weight: 400;
+  font-size: clamp(36px, 4.6vw, 72px);
+  line-height: 1.02;
+  text-transform: uppercase;
+}
+.jd-meta {
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  color: rgba(245, 240, 233, 0.55);
+}
+.jd-desc {
+  max-width: 46ch;
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+  color: rgba(245, 240, 233, 0.78);
+}
+.jd-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+.jd-btn {
+  height: 40px;
+  padding: 0 20px;
+  cursor: pointer;
+}
+.jd-btn.solid {
+  border-color: var(--j-orange);
+  color: var(--j-orange);
+}
+.jd-btn.solid:hover {
+  background: var(--j-orange);
+  color: var(--j-ink);
+}
+
+/* right column: every milestone as a list */
+.jd-right {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(245, 240, 233, 0.14);
+}
+.jd-right li {
+  border-bottom: 1px solid rgba(245, 240, 233, 0.14);
+}
+.jd-item {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  padding: 22px 6px;
+  border: 0;
+  background: transparent;
+  color: rgba(245, 240, 233, 0.5);
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.45s var(--j-ease), padding 0.45s var(--j-ease);
+}
+.jd-item:hover {
+  color: var(--j-cream);
+  padding-left: 14px;
+}
+.jd-item.on {
+  color: var(--j-cream);
+}
+.jd-item-year {
+  min-width: 82px;
+  font-family: 'Anton', 'Bebas Neue', Impact, sans-serif;
+  font-size: 34px;
+  line-height: 1;
+}
+.jd-item.on .jd-item-year {
+  color: var(--j-orange);
+}
+.jd-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.jd-item-label {
+  font-family: 'Inter Tight', 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--j-orange);
+}
+.jd-item-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 17px;
+}
+
+@media (max-width: 767px) {
+  .journey-bar {
+    margin-top: 40px;
+  }
+  .jd-close {
+    top: 18px;
+    left: 20px;
+  }
+  .jd-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: start;
+    padding: 84px 22px 40px;
+  }
+  .jd-desc {
+    font-size: 16px;
+  }
+  .jd-item {
+    gap: 18px;
+    padding: 18px 4px;
+  }
+  .jd-item-year {
+    min-width: 64px;
+    font-size: 28px;
+  }
+  .jd-item-title {
+    font-size: 15px;
+  }
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .tab-indicator,
+  .tab,
+  .journey-arrow {
+    transition: none;
+  }
+}

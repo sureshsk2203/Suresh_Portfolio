@@ -1,0 +1,39 @@
+/* 5. finale */
+.out{background:var(--ink)}
+.out-a{position:absolute;inset:0;overflow:hidden;background:radial-gradient(60% 50% at 50% 55%,rgba(255,60,20,.35),transparent 70%)}
+.out-glow{position:absolute;left:50%;bottom:-6vh;width:min(90vw,1100px);height:40vh;transform:translateX(-50%);opacity:0;pointer-events:none;background:radial-gradient(50% 50% at 50% 50%,rgba(255,80,25,.42),transparent 70%)}
+.out-name{
+  position:absolute;left:0;right:0;top:13vh;margin:0;z-index:1;text-align:center;
+  font-family:var(--display);font-weight:400;font-size:min(29vw,50vh);line-height:1;letter-spacing:-.005em;user-select:none;
+  background:linear-gradient(180deg,#ff8a2b 0%,#ff4a16 42%,#b01808 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 46px rgba(255,70,20,.38));clip-path:inset(0 100% 0 0);
+}
+.out-me{position:absolute;left:0;right:0;bottom:0;height:76vh;z-index:2;display:flex;justify-content:center;align-items:flex-end;pointer-events:none;opacity:0;will-change:transform,opacity}
+.out-me img{height:100%;width:auto;display:block;filter:drop-shadow(0 0 2px rgba(255,150,80,.85)) drop-shadow(0 0 32px rgba(255,70,20,.45))}
+.out-scrim{position:absolute;left:0;right:0;bottom:0;height:34vh;z-index:3;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(7,4,5,.9) 78%)}
+.out-tag{position:absolute;left:0;right:0;bottom:7vh;margin:0;z-index:4;text-align:center;overflow:hidden;padding:0 16px 6px}
+.out-tag span{display:block;font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.6vw,38px);line-height:1.15;color:var(--bone);text-shadow:0 2px 24px rgba(0,0,0,.85);transform:translateY(115%)}
+.out-b{position:absolute;inset:0;background:radial-gradient(70% 80% at 80% 40%,#3a1308,#0b0505 70%);clip-path:polygon(130% 0,100% 0,100% 100%,105% 100%);color:var(--bone)}
+.out-photo{position:absolute;right:0;top:0;bottom:0;width:min(54vw,860px);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 32%);mask-image:linear-gradient(90deg,transparent 0,#000 32%)}
+.out-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.out-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 70%,rgba(7,4,5,.7))}
+.out-copy{position:absolute;left:0;top:0;bottom:0;width:52%;z-index:3;display:flex;flex-direction:column;justify-content:center;gap:18px;padding-left:max(clamp(20px,5vw,80px),env(safe-area-inset-left,0px));padding-right:2vw}
+.out-copy .mono{color:var(--flame)}
+.out-copy h2{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(40px,6vw,100px);line-height:.95;text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+.out-copy h2 em{font-style:normal;color:var(--flame)}
+.contacts{display:flex;flex-direction:column;margin-top:6px;max-width:520px}
+.crow{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);min-width:0}
+.crow .k{flex:0 0 78px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--flame)}
+.crow .v{flex:1;min-width:0;font-weight:600;font-size:clamp(13px,1.1vw,16px);overflow-wrap:anywhere;text-decoration:none;color:var(--bone);user-select:all}
+.crow a.v:hover{color:var(--gold)}
+.copy{flex:0 0 auto;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--flame);color:#1a0603;border:0;border-radius:99px;padding:6px 11px;cursor:pointer;font-weight:500}
+
+@media (max-width:760px){
+  .out{height:auto;min-height:100svh}
+  .out-a{display:none}
+  .out-b{position:relative;clip-path:none!important;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end}
+  .out-photo{width:100%;height:78%;bottom:auto;-webkit-mask-image:linear-gradient(180deg,#000 60%,transparent);mask-image:linear-gradient(180deg,#000 60%,transparent)}
+  .out-photo img{object-position:50% 12%}
+  .out-copy{position:relative;width:100%;padding:0 max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));margin-top:44vh}
+  .crow .k{flex-basis:64px}
+}

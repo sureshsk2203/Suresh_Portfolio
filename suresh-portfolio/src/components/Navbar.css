@@ -1,0 +1,10 @@
+/* nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:65;display:flex;justify-content:space-between;align-items:center;padding-top:max(18px,env(safe-area-inset-top,0px));padding-bottom:22px;background:linear-gradient(rgba(7,4,5,.82),transparent)}
+.logo{font-family:var(--display);font-size:26px;letter-spacing:.04em;text-decoration:none;color:var(--bone);text-shadow:0 0 18px rgba(255,80,20,.6)}
+.nav nav{display:flex;gap:clamp(14px,3vw,34px)}
+.nav nav a{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;text-decoration:none;color:var(--bone);opacity:.7;padding:6px 0;border-bottom:1px solid transparent;transition:opacity .2s,border-color .2s}
+.nav nav a:hover,.nav nav a.on{opacity:1;border-color:var(--flame)}
+
+@media (max-width:760px){
+  .nav nav a:nth-child(n+3){display:none}
+}

@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap');
+
+/* Layout concept: one dark cinema, five pinned scenes (hero, tools orbit, timeline arc, 3D project wall, red/cream finale), driven by scroll. */
+:root{
+  --ink:#070405; --ink-2:#120908; --ember:#ff3d12; --flame:#ff7a2c; --gold:#f4bd62;
+  --bone:#f4ece4; --mute:#a8998f; --line:rgba(255,160,100,.22); --cream:#e9e1d5; --blood:#d4200f;
+  --display:'Anton','Impact','Arial Narrow',sans-serif;
+  --serif:'Instrument Serif','Times New Roman',serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --sans:'Manrope',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--ink)}
+body{margin:0;background:var(--ink);color:var(--bone);font-family:var(--sans);font-size:16px;line-height:1.5;overflow-x:clip;-webkit-font-smoothing:antialiased}
+img{max-width:none;display:block}
+a{color:inherit}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--mono);letter-spacing:.28em;text-transform:uppercase;font-size:11px}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* scenes */
+.scene{position:relative;z-index:1;height:100vh;height:100svh;overflow:hidden}
+.fadeable{will-change:opacity,transform}
+
+/* shared section heading (Journey + Work) */
+.jr-head h2,.wk-title h2{font-family:var(--display);font-weight:400;text-transform:uppercase;margin:.2em 0 0;line-height:.98;letter-spacing:.015em;text-wrap:balance}
+
+/* reduced motion: no pinning, sections just stack */
+body.reduce .scene{height:auto;min-height:100svh}

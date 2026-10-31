@@ -1,0 +1,5 @@
+.foot{position:absolute;left:0;bottom:2.4vh;z-index:4;margin-left:max(16px,env(safe-area-inset-left,0px));font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+
+@media (max-width:760px){
+  .foot{position:relative;display:block;margin:6px 0 16px max(16px,env(safe-area-inset-left,0px));bottom:auto}
+}
